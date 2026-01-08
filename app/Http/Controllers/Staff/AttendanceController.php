@@ -9,11 +9,15 @@ use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $attendances = Attendance::where('user_id', auth()->id())
-            ->latest('date')
-            ->paginate(20);
+        $query = Attendance::where('user_id', auth()->id());
+
+        if ($request->has('date') && $request->date) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $attendances = $query->latest('date')->paginate(20);
 
         return view('staff.attendance.index', compact('attendances'));
     }
@@ -69,7 +73,29 @@ class AttendanceController extends Controller
             return back()->with('error', 'You have already timed out today.');
         }
 
-        $timeIn = Carbon::parse($attendance->date->format('Y-m-d') . ' ' . $attendance->time_in);
+        // Parse time_in properly
+        // time_in is stored as H:i:s string, extract just the time part
+        $timeInString = (string) $attendance->time_in;
+        
+        // If it contains a date (has spaces or is longer than 8 chars), extract time only
+        if (strpos($timeInString, ' ') !== false) {
+            $parts = explode(' ', $timeInString);
+            $timeInString = end($parts); // Get the time part
+        }
+        
+        // Ensure we have a valid time format (H:i:s)
+        if (!preg_match('/^\d{1,2}:\d{2}:\d{2}$/', $timeInString)) {
+            // Try to parse as datetime and extract time
+            try {
+                $parsed = Carbon::parse($attendance->time_in);
+                $timeInString = $parsed->format('H:i:s');
+            } catch (\Exception $e) {
+                return back()->with('error', 'Invalid time in record. Please contact HR.');
+            }
+        }
+        
+        // Create datetime by combining date and time
+        $timeIn = Carbon::createFromFormat('Y-m-d H:i:s', $attendance->date->format('Y-m-d') . ' ' . $timeInString);
         $timeOut = $now;
         $totalMinutes = $timeOut->diffInMinutes($timeIn);
         $totalHours = round($totalMinutes / 60, 2);

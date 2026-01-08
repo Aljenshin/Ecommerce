@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Manage Staff & Uploaders</h1>
+    <h1 class="text-3xl font-bold">Manage Staff</h1>
     <a href="{{ route('hr.users.create') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700">
         Create Staff Account
     </a>
@@ -37,7 +37,7 @@
                                 @if($user->role == 'staff') bg-blue-100 text-blue-800
                                 @else bg-purple-100 text-purple-800
                                 @endif">
-                                {{ $user->role === 'uploader' ? 'Product Manager' : ucfirst($user->role) }}
+                                {{ ucfirst($user->role) }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">

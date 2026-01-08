@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\HR\AnnouncementController as HRAnnouncementController;
 use App\Http\Controllers\HR\AttendanceController as HRAttendanceController;
 use App\Http\Controllers\HR\DashboardController as HRDashboardController;
@@ -52,6 +53,16 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+    // User Management (Admin only)
+    Route::resource('users', AdminUserController::class)->names([
+        'index' => 'admin.users.index',
+        'create' => 'admin.users.create',
+        'store' => 'admin.users.store',
+        'edit' => 'admin.users.edit',
+        'update' => 'admin.users.update',
+        'destroy' => 'admin.users.destroy',
+    ]);
+
     // Categories (Admin only)
     Route::resource('categories', AdminCategoryController::class)->names([
         'index' => 'admin.categories.index',
@@ -63,8 +74,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     ]);
 });
 
-// Product management: Admin and Uploaders
-Route::prefix('admin')->middleware(['auth', 'role:admin,uploader'])->group(function () {
+// Product management: Admin and Staff
+Route::prefix('admin')->middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::resource('products', AdminProductController::class)->names([
         'index' => 'admin.products.index',
         'create' => 'admin.products.create',

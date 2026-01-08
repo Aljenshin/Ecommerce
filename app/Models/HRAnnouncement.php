@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HRAnnouncement extends Model
 {
+    protected $table = 'hr_announcements';
+
     protected $fillable = [
         'created_by',
         'title',

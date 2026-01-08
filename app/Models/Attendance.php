@@ -22,8 +22,6 @@ class Attendance extends Model
 
     protected $casts = [
         'date' => 'date',
-        'time_in' => 'datetime',
-        'time_out' => 'datetime',
     ];
 
     public function user(): BelongsTo

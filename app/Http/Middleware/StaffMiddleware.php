@@ -16,7 +16,7 @@ class StaffMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->hasRole([User::ROLE_STAFF, User::ROLE_UPLOADER, User::ROLE_HR, User::ROLE_ADMIN])) {
+        if (!auth()->check() || !auth()->user()->hasRole([User::ROLE_STAFF, User::ROLE_HR, User::ROLE_ADMIN])) {
             abort(403, 'Unauthorized access. Staff role required.');
         }
 

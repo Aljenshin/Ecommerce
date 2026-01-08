@@ -22,7 +22,7 @@ class AttendanceController extends Controller
         }
 
         $attendances = $query->latest('date')->paginate(20);
-        $staff = User::whereIn('role', [User::ROLE_STAFF, User::ROLE_UPLOADER])->get();
+        $staff = User::where('role', User::ROLE_STAFF)->get();
 
         return view('hr.attendance.index', compact('attendances', 'staff'));
     }

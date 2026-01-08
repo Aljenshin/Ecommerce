@@ -13,8 +13,8 @@ class DashboardController extends Controller
     public function index()
     {
         // Staff statistics
-        $staffCount = User::whereIn('role', [User::ROLE_STAFF, User::ROLE_UPLOADER])->count();
-        $activeStaff = User::whereIn('role', [User::ROLE_STAFF, User::ROLE_UPLOADER])
+        $staffCount = User::where('role', User::ROLE_STAFF)->count();
+        $activeStaff = User::where('role', User::ROLE_STAFF)
             ->where('is_active', true)
             ->count();
 

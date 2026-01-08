@@ -21,7 +21,6 @@ class UserController extends Controller
         $roles = [
             User::ROLE_ADMIN,
             User::ROLE_HR,
-            User::ROLE_UPLOADER,
             User::ROLE_STAFF,
         ];
 
@@ -33,7 +32,6 @@ class UserController extends Controller
         $roles = [
             User::ROLE_ADMIN,
             User::ROLE_HR,
-            User::ROLE_UPLOADER,
             User::ROLE_STAFF,
         ];
 
@@ -62,7 +60,6 @@ class UserController extends Controller
         $roles = [
             User::ROLE_ADMIN,
             User::ROLE_HR,
-            User::ROLE_UPLOADER,
             User::ROLE_STAFF,
         ];
 
@@ -74,7 +71,6 @@ class UserController extends Controller
         $roles = [
             User::ROLE_ADMIN,
             User::ROLE_HR,
-            User::ROLE_UPLOADER,
             User::ROLE_STAFF,
         ];
 

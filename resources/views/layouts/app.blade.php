@@ -17,7 +17,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold text-blue-600">Winbreaker Admin</a>
                         @elseif(auth()->user()->hasRole('hr'))
                             <a href="{{ route('hr.dashboard') }}" class="text-2xl font-bold text-blue-600">Winbreaker HR</a>
-                        @elseif(auth()->user()->hasRole(['staff', 'uploader']))
+                        @elseif(auth()->user()->hasRole('staff'))
                             <a href="{{ route('staff.dashboard') }}" class="text-2xl font-bold text-blue-600">Winbreaker Staff</a>
                         @else
                             <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">Winbreaker</a>
@@ -32,6 +32,7 @@
                     @auth
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <a href="{{ route('admin.users.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Users</a>
                             <a href="{{ route('admin.products.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
                             <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Categories</a>
                         @elseif(auth()->user()->hasRole('hr'))
@@ -40,8 +41,9 @@
                             <a href="{{ route('hr.announcements.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Announcements</a>
                             <a href="{{ route('hr.leaves.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Leaves</a>
                             <a href="{{ route('hr.payroll.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Payroll</a>
-                        @elseif(auth()->user()->hasRole(['staff', 'uploader']))
+                        @elseif(auth()->user()->hasRole('staff'))
                             <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <a href="{{ route('admin.products.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
                             <a href="{{ route('staff.attendance.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Attendance</a>
                             <a href="{{ route('staff.leaves.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Leaves</a>
                             <a href="{{ route('staff.payroll.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Payroll</a>
@@ -87,6 +89,7 @@
                 @auth
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                        <a href="{{ route('admin.users.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Users</a>
                         <a href="{{ route('admin.products.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Products</a>
                         <a href="{{ route('admin.categories.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Categories</a>
                     @elseif(auth()->user()->hasRole('hr'))
@@ -95,8 +98,9 @@
                         <a href="{{ route('hr.announcements.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Announcements</a>
                         <a href="{{ route('hr.leaves.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Leaves</a>
                         <a href="{{ route('hr.payroll.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Payroll</a>
-                    @elseif(auth()->user()->hasRole(['staff', 'uploader']))
+                    @elseif(auth()->user()->hasRole('staff'))
                         <a href="{{ route('staff.dashboard') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                        <a href="{{ route('admin.products.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Products</a>
                         <a href="{{ route('staff.attendance.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Attendance</a>
                         <a href="{{ route('staff.leaves.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Leaves</a>
                         <a href="{{ route('staff.payroll.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Payroll</a>

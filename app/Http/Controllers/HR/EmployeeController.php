@@ -10,19 +10,32 @@ use Illuminate\Support\Str;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with('user')
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        $query = Employee::with('user');
+
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('employee_number', 'like', "%{$search}%")
+                  ->orWhere('position', 'like', "%{$search}%")
+                  ->orWhere('department', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $employees = $query->orderBy('created_at', 'desc')->paginate(15);
 
         return view('hr.employees.index', compact('employees'));
     }
 
     public function create()
     {
-        // Get users who are staff/uploader but don't have employee records yet
-        $availableUsers = User::whereIn('role', [User::ROLE_STAFF, User::ROLE_UPLOADER])
+        // Get users who are staff but don't have employee records yet
+        $availableUsers = User::where('role', User::ROLE_STAFF)
             ->whereDoesntHave('employee')
             ->get();
 

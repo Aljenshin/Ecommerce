@@ -17,7 +17,7 @@ class DashboardController extends Controller
             'total_products' => Product::count(),
             'active_products' => Product::where('is_active', true)->count(),
             'total_customers' => User::where('role', 'customer')->count(),
-            'total_staff' => User::whereIn('role', ['hr', 'uploader', 'staff'])->count(),
+            'total_staff' => User::whereIn('role', ['hr', 'staff'])->count(),
             'total_revenue' => Order::where('status', '!=', 'cancelled')->sum('total_amount'),
             'monthly_revenue' => Order::where('status', '!=', 'cancelled')
                 ->whereMonth('created_at', now()->month)

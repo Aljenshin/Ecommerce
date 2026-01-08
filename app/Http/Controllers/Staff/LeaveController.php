@@ -9,11 +9,18 @@ use Carbon\Carbon;
 
 class LeaveController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $leaveRequests = LeaveRequest::where('user_id', auth()->id())
-            ->latest()
-            ->paginate(15);
+        $query = LeaveRequest::where('user_id', auth()->id());
+
+        if ($request->has('date') && $request->date) {
+            $query->where(function($q) use ($request) {
+                $q->whereDate('start_date', '<=', $request->date)
+                  ->whereDate('end_date', '>=', $request->date);
+            });
+        }
+
+        $leaveRequests = $query->latest()->paginate(15);
 
         return view('staff.leaves.index', compact('leaveRequests'));
     }

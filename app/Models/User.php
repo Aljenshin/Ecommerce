@@ -12,7 +12,6 @@ class User extends Authenticatable
 {
     public const ROLE_ADMIN = 'admin';
     public const ROLE_HR = 'hr';
-    public const ROLE_UPLOADER = 'uploader';
     public const ROLE_STAFF = 'staff';
     public const ROLE_CUSTOMER = 'customer';
 

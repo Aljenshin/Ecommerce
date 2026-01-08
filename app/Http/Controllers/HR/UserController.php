@@ -11,8 +11,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        // HR can only see staff and uploader accounts
-        $users = User::whereIn('role', [User::ROLE_STAFF, User::ROLE_UPLOADER])
+        // HR can only see staff accounts
+        $users = User::where('role', User::ROLE_STAFF)
             ->orderBy('name')
             ->paginate(15);
 
@@ -21,10 +21,9 @@ class UserController extends Controller
 
     public function create()
     {
-        // HR can only create Staff and Uploader accounts
+        // HR can only create Staff accounts
         $roles = [
             User::ROLE_STAFF => 'Staff',
-            User::ROLE_UPLOADER => 'Product Manager / Uploader',
         ];
 
         return view('hr.users.create', compact('roles'));
@@ -36,17 +35,15 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],
-            'role' => ['required', 'in:'.User::ROLE_STAFF.','.User::ROLE_UPLOADER],
-            'is_active' => ['nullable', 'boolean'],
+            'role' => ['required', 'in:'.User::ROLE_STAFF],
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'is_active' => $request->boolean('is_active', true),
-            'is_admin' => false,
+            'role' => User::ROLE_STAFF,
+            'is_active' => true,
         ]);
 
         return redirect()->route('hr.users.index')->with('success', 'Staff account created successfully.');
@@ -54,14 +51,13 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // HR can only edit staff and uploader accounts
-        if (!in_array($user->role, [User::ROLE_STAFF, User::ROLE_UPLOADER])) {
-            abort(403, 'You can only edit staff and uploader accounts.');
+        // HR can only edit staff accounts
+        if ($user->role !== User::ROLE_STAFF) {
+            abort(403, 'You can only edit staff accounts.');
         }
 
         $roles = [
             User::ROLE_STAFF => 'Staff',
-            User::ROLE_UPLOADER => 'Product Manager / Uploader',
         ];
 
         return view('hr.users.edit', compact('user', 'roles'));
@@ -69,24 +65,22 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // HR can only edit staff and uploader accounts
-        if (!in_array($user->role, [User::ROLE_STAFF, User::ROLE_UPLOADER])) {
-            abort(403, 'You can only edit staff and uploader accounts.');
+        // HR can only edit staff accounts
+        if ($user->role !== User::ROLE_STAFF) {
+            abort(403, 'You can only edit staff accounts.');
         }
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'password' => ['nullable', 'string', 'min:8'],
-            'role' => ['required', 'in:'.User::ROLE_STAFF.','.User::ROLE_UPLOADER],
-            'is_active' => ['nullable', 'boolean'],
+            'role' => ['required', 'in:'.User::ROLE_STAFF],
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
-            'is_active' => $request->boolean('is_active', true),
+            'role' => User::ROLE_STAFF,
         ];
 
         if ($request->filled('password')) {
@@ -100,9 +94,13 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        // HR can only delete staff and uploader accounts
-        if (!in_array($user->role, [User::ROLE_STAFF, User::ROLE_UPLOADER])) {
-            abort(403, 'You can only delete staff and uploader accounts.');
+        // HR can only delete staff accounts
+        if ($user->role !== User::ROLE_STAFF) {
+            abort(403, 'You can only delete staff accounts.');
+        }
+
+        if (auth()->id() === $user->id) {
+            return back()->with('error', 'You cannot delete your own account.');
         }
 
         $user->delete();

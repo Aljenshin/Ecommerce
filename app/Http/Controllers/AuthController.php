@@ -64,7 +64,7 @@ class AuthController extends Controller
                 return redirect()->route('hr.dashboard');
             }
 
-            if ($user->hasRole([User::ROLE_STAFF, User::ROLE_UPLOADER])) {
+            if ($user->hasRole(User::ROLE_STAFF)) {
                 return redirect()->route('staff.dashboard');
             }
 
@@ -94,7 +94,7 @@ class AuthController extends Controller
                 return redirect()->route('hr.dashboard');
             }
 
-            if ($user->hasRole([User::ROLE_STAFF, User::ROLE_UPLOADER])) {
+            if ($user->hasRole(User::ROLE_STAFF)) {
                 return redirect()->route('staff.dashboard');
             }
 
