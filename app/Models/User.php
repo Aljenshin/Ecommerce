@@ -37,6 +37,8 @@ class User extends Authenticatable
         'postal_code',
         'country',
         'location',
+        'country_code',
+        'language',
     ];
 
     /**
@@ -92,6 +94,21 @@ class User extends Authenticatable
     public function payrollItems(): HasMany
     {
         return $this->hasMany(PayrollItem::class);
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function productRatings(): HasMany
+    {
+        return $this->hasMany(ProductRating::class);
     }
 
     public function isAdmin(): bool

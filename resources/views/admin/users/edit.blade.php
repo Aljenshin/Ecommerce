@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit User - Winbreaker')
+@section('title', 'Edit User - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Edit User</h1>

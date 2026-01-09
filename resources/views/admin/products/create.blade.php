@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Product - Winbreaker')
+@section('title', 'Add Product - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Add New Product</h1>
@@ -18,20 +18,38 @@
             @enderror
         </div>
         
-        <div class="mb-4">
-            <label for="category_id" class="block text-gray-700 text-sm font-bold mb-2">Category</label>
-            <select name="category_id" id="category_id" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('category_id') border-red-500 @enderror">
-                <option value="">Select a category</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('category_id')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="category_id" class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                <select name="category_id" id="category_id" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('category_id') border-red-500 @enderror">
+                    <option value="">Select a category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <div>
+                <label for="brand_id" class="block text-gray-700 text-sm font-bold mb-2">Brand</label>
+                <select name="brand_id" id="brand_id"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('brand_id') border-red-500 @enderror">
+                    <option value="">Select a brand (Optional)</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                            {{ $brand->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('brand_id')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
         
         <div class="mb-4">
@@ -65,8 +83,23 @@
         
         <div class="mb-4">
             <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Product Image</label>
-            <input type="file" name="image" id="image" accept="image/*"
+            
+            <!-- Image Preview -->
+            <div id="image-preview-container" class="hidden mb-4">
+                <div class="relative inline-block">
+                    <img id="image-preview" src="" alt="Image preview" class="h-48 w-48 object-cover rounded-lg border-2 border-gray-300">
+                    <button type="button" onclick="clearImagePreview()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-600 mt-2">Image preview</p>
+            </div>
+            
+            <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(this)"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('image') border-red-500 @enderror">
+            <p class="text-sm text-gray-500 mt-1">Supported formats: JPG, PNG, GIF (Max: 2MB)</p>
             @error('image')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
@@ -90,5 +123,33 @@
         </div>
     </form>
 </div>
+
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('image-preview');
+        const previewContainer = document.getElementById('image-preview-container');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    function clearImagePreview() {
+        const input = document.getElementById('image');
+        const preview = document.getElementById('image-preview');
+        const previewContainer = document.getElementById('image-preview-container');
+        
+        input.value = '';
+        preview.src = '';
+        previewContainer.classList.add('hidden');
+    }
+</script>
 @endsection
 

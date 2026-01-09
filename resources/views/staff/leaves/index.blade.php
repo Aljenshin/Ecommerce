@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Leave Requests - Winbreaker Staff')
+@section('title', 'Leave Requests - Uni-H-Pen Staff')
 
 @section('content')
 <div class="flex justify-between items-center mb-6">

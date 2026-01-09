@@ -14,13 +14,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Shirts', 'description' => 'T-shirts, polo shirts, dress shirts and more'],
-            ['name' => 'Caps', 'description' => 'Baseball caps, snapbacks, beanies and more'],
-            ['name' => 'Shorts', 'description' => 'Athletic shorts, casual shorts, board shorts and more'],
-            ['name' => 'Shoes', 'description' => 'Sneakers, boots, sandals and more'],
-            ['name' => 'Pants', 'description' => 'Jeans, chinos, joggers and more'],
-            ['name' => 'Jackets', 'description' => 'Hoodies, jackets, coats and more'],
-            ['name' => 'Accessories', 'description' => 'Belts, wallets, bags and more'],
+            ['name' => 'T-Shirts', 'description' => 'Casual and comfortable t-shirts for everyday wear'],
+            ['name' => 'Polo Shirts', 'description' => 'Classic polo shirts for a smart casual look'],
+            ['name' => 'Hoodies', 'description' => 'Warm and comfortable hoodies for any season'],
+            ['name' => 'Jackets', 'description' => 'Stylish jackets and coats to keep you warm'],
+            ['name' => 'Pants', 'description' => 'Comfortable pants for all occasions'],
+            ['name' => 'Shorts', 'description' => 'Athletic and casual shorts for warm weather'],
+            ['name' => 'Caps / Hats', 'description' => 'Trendy caps and hats to complete your look'],
+            ['name' => 'Accessories', 'description' => 'Essential accessories including belts, bags, and more'],
         ];
 
         foreach ($categories as $category) {

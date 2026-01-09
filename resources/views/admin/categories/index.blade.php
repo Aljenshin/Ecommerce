@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manage Categories - Winbreaker')
+@section('title', 'Manage Categories - Uni-H-Pen')
 
 @section('content')
 <div class="flex justify-between items-center mb-6">

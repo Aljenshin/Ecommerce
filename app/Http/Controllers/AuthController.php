@@ -22,6 +22,8 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'phone' => ['required', 'string', 'max:20'],
+            'country_code' => ['nullable', 'string', 'max:10'],
+            'language' => ['nullable', 'string', 'max:10'],
             'address' => ['required', 'string', 'max:500'],
             'city' => ['required', 'string', 'max:255'],
             'state' => ['nullable', 'string', 'max:255'],
@@ -35,6 +37,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
+            'country_code' => $request->country_code ?? '+1',
+            'language' => $request->language ?? 'en',
             'address' => $request->address,
             'city' => $request->city,
             'state' => $request->state,
@@ -48,7 +52,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'Registration successful! Welcome to Winbreaker!');
+        return redirect()->route('home')->with('success', 'Registration successful! Welcome to Uni-H-Pen!');
     }
 
     public function showLogin()

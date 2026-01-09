@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Attendance - Winbreaker Staff')
+@section('title', 'Attendance - Uni-H-Pen Staff')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">My Attendance</h1>

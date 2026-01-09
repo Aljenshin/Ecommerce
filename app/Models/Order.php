@@ -32,7 +32,7 @@ class Order extends Model
 
         static::creating(function ($order) {
             if (empty($order->order_number)) {
-                $order->order_number = 'WIN-' . strtoupper(Str::random(10));
+                $order->order_number = 'UHP-' . strtoupper(Str::random(10));
             }
         });
     }

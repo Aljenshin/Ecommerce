@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Leave Requests - Winbreaker HR')
+@section('title', 'Leave Requests - Uni-H-Pen HR')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Leave Requests</h1>

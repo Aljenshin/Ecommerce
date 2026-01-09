@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Register - Winbreaker')
+@section('title', 'Register - Uni-H-Pen')
 
 @section('content')
 <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
     <h2 class="text-3xl font-bold mb-6 text-center">Create Your Account</h2>
-    <p class="text-center text-gray-600 mb-6">Join Winbreaker and start shopping! Fill in your details below.</p>
+    <p class="text-center text-gray-600 mb-6">Join Uni-H-Pen and start shopping! Fill in your details below.</p>
     
     <form method="POST" action="{{ route('register') }}">
         @csrf
@@ -35,10 +35,31 @@
             
             <div class="mb-4">
                 <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Mobile/Phone Number *</label>
-                <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('phone') border-red-500 @enderror"
-                    placeholder="+1234567890">
+                <div class="flex gap-2">
+                    <select name="country_code" id="country_code" required
+                        class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('country_code') border-red-500 @enderror">
+                        <option value="+1" {{ old('country_code', '+1') == '+1' ? 'selected' : '' }}>+1 (US/CA)</option>
+                        <option value="+63" {{ old('country_code') == '+63' ? 'selected' : '' }}>+63 (PH)</option>
+                        <option value="+81" {{ old('country_code') == '+81' ? 'selected' : '' }}>+81 (JP)</option>
+                        <option value="+46" {{ old('country_code') == '+46' ? 'selected' : '' }}>+46 (SE)</option>
+                        <option value="+44" {{ old('country_code') == '+44' ? 'selected' : '' }}>+44 (UK)</option>
+                        <option value="+61" {{ old('country_code') == '+61' ? 'selected' : '' }}>+61 (AU)</option>
+                        <option value="+86" {{ old('country_code') == '+86' ? 'selected' : '' }}>+86 (CN)</option>
+                        <option value="+82" {{ old('country_code') == '+82' ? 'selected' : '' }}>+82 (KR)</option>
+                        <option value="+65" {{ old('country_code') == '+65' ? 'selected' : '' }}>+65 (SG)</option>
+                        <option value="+60" {{ old('country_code') == '+60' ? 'selected' : '' }}>+60 (MY)</option>
+                        <option value="+66" {{ old('country_code') == '+66' ? 'selected' : '' }}>+66 (TH)</option>
+                        <option value="+84" {{ old('country_code') == '+84' ? 'selected' : '' }}>+84 (VN)</option>
+                        <option value="+7" {{ old('country_code') == '+7' ? 'selected' : '' }}>+7 (RU)</option>
+                    </select>
+                    <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" required
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('phone') border-red-500 @enderror"
+                        placeholder="1234567890">
+                </div>
                 @error('phone')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+                @error('country_code')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>

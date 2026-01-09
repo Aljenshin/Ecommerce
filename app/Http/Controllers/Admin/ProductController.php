@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -13,14 +14,15 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->paginate(15);
+        $products = Product::with(['category', 'brand'])->paginate(15);
         return view('admin.products.index', compact('products'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        $brands = Brand::where('is_active', true)->get();
+        return view('admin.products.create', compact('categories', 'brands'));
     }
 
     public function store(Request $request)
@@ -28,6 +30,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'exists:categories,id'],
+            'brand_id' => ['nullable', 'exists:brands,id'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
@@ -39,6 +42,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
@@ -58,7 +62,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $brands = Brand::where('is_active', true)->get();
+        return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
 
     public function update(Request $request, Product $product)
@@ -66,6 +71,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'exists:categories,id'],
+            'brand_id' => ['nullable', 'exists:brands,id'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
@@ -77,6 +83,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,

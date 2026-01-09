@@ -17,7 +17,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = CartItem::where('user_id', Auth::id())
-            ->with('product')
+            ->with(['product.category', 'product.brand'])
             ->get();
 
         $total = $cartItems->sum(function ($item) {
@@ -35,10 +35,29 @@ class CartController extends Controller
             'color' => ['nullable', 'string', 'max:50'],
         ]);
 
+        $size = $request->size ?: null;
+        $color = $request->color ?: null;
+
+        // Normalize empty strings to null
+        $size = ($size === '') ? null : $size;
+        $color = ($color === '') ? null : $color;
+
         $cartItem = CartItem::where('user_id', Auth::id())
             ->where('product_id', $product->id)
-            ->where('size', $request->size)
-            ->where('color', $request->color)
+            ->where(function($query) use ($size) {
+                if ($size === null) {
+                    $query->whereNull('size');
+                } else {
+                    $query->where('size', $size);
+                }
+            })
+            ->where(function($query) use ($color) {
+                if ($color === null) {
+                    $query->whereNull('color');
+                } else {
+                    $query->where('color', $color);
+                }
+            })
             ->first();
 
         if ($cartItem) {
@@ -49,8 +68,8 @@ class CartController extends Controller
                 'user_id' => Auth::id(),
                 'product_id' => $product->id,
                 'quantity' => $request->quantity,
-                'size' => $request->size,
-                'color' => $request->color,
+                'size' => $size,
+                'color' => $color,
             ]);
         }
 

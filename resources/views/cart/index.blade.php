@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shopping Cart - Winbreaker')
+@section('title', 'Shopping Cart - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
@@ -26,7 +26,12 @@
                                 <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="h-16 w-16 object-cover rounded">
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $item->product->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $item->product->category->name }}</div>
+                                    <div class="flex items-center space-x-2 mt-1">
+                                        @if($item->product->brand)
+                                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{{ $item->product->brand->name }}</span>
+                                        @endif
+                                        <span class="text-sm text-gray-500">{{ $item->product->category->name }}</span>
+                                    </div>
                                     @if($item->size || $item->color)
                                         <div class="text-xs text-gray-500 mt-1">
                                             @if($item->size)

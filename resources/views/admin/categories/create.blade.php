@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Category - Winbreaker')
+@section('title', 'Add Category - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Add New Category</h1>

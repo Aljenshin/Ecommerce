@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Checkout - Winbreaker')
+@section('title', 'Checkout - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Checkout</h1>
@@ -12,6 +12,15 @@
         
         <form method="POST" action="{{ route('orders.store') }}">
             @csrf
+            
+            @if(isset($isBuyNow) && $isBuyNow)
+                @foreach($cartItems as $item)
+                    <input type="hidden" name="buy_now_items[{{ $loop->index }}][product_id]" value="{{ $item->product_id }}">
+                    <input type="hidden" name="buy_now_items[{{ $loop->index }}][quantity]" value="{{ $item->quantity }}">
+                    <input type="hidden" name="buy_now_items[{{ $loop->index }}][size]" value="{{ $item->size ?? '' }}">
+                    <input type="hidden" name="buy_now_items[{{ $loop->index }}][color]" value="{{ $item->color ?? '' }}">
+                @endforeach
+            @endif
             
             <div class="mb-4">
                 <label for="shipping_address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
@@ -96,13 +105,32 @@
             @foreach($cartItems as $item)
             <div class="flex justify-between items-center border-b pb-4">
                 <div class="flex items-center">
-                    <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="h-16 w-16 object-cover rounded">
+                    @php
+                        if (is_object($item->product)) {
+                            $product = $item->product;
+                        } else {
+                            $product = \App\Models\Product::with(['category', 'brand'])->find($item->product_id ?? $item->product->id ?? null);
+                        }
+                    @endphp
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-16 w-16 object-cover rounded">
                     <div class="ml-4">
-                        <p class="font-semibold">{{ $item->product->name }}</p>
-                        <p class="text-sm text-gray-600">Qty: {{ $item->quantity }}</p>
+                        <p class="font-semibold">{{ $product->name }}</p>
+                        <div class="flex items-center space-x-2 mt-1">
+                            @if($product->brand)
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">{{ $product->brand->name }}</span>
+                            @endif
+                            <span class="text-sm text-gray-600">{{ $product->category->name }}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Qty: {{ $item->quantity }}</p>
+                        @if(isset($item->size) && $item->size)
+                            <p class="text-xs text-gray-500">Size: {{ $item->size }}</p>
+                        @endif
+                        @if(isset($item->color) && $item->color)
+                            <p class="text-xs text-gray-500">Color: {{ $item->color }}</p>
+                        @endif
                     </div>
                 </div>
-                <p class="font-semibold">${{ number_format($item->quantity * $item->product->price, 2) }}</p>
+                <p class="font-semibold">${{ number_format($item->quantity * $product->price, 2) }}</p>
             </div>
             @endforeach
         </div>

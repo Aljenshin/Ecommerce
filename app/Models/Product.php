@@ -11,6 +11,7 @@ class Product extends Model
 {
     protected $fillable = [
         'category_id',
+        'brand_id',
         'name',
         'slug',
         'description',
@@ -41,6 +42,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
@@ -49,6 +55,26 @@ class Product extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(ProductRating::class);
+    }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->ratings()->avg('rating') ?? 0;
+    }
+
+    public function getTotalRatingsAttribute()
+    {
+        return $this->ratings()->count();
     }
 
     public function getImageUrlAttribute()

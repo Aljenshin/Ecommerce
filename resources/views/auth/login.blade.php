@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - Winbreaker')
+@section('title', 'Login - Uni-H-Pen')
 
 @section('content')
 <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">

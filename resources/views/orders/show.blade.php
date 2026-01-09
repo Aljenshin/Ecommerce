@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Order #' . $order->order_number . ' - Winbreaker')
+@section('title', 'Order #' . $order->order_number . ' - Uni-H-Pen')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Order #{{ $order->order_number }}</h1>

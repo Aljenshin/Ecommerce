@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create Staff Account - Winbreaker HR')
+@section('title', 'Create Staff Account - Uni-H-Pen HR')
 
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Create Staff Account</h1>

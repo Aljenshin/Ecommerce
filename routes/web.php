@@ -42,6 +42,28 @@ Route::middleware('auth')->group(function () {
     Route::put('/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
 
+    // Favorites Routes
+    Route::post('/favorites/{product}', [App\Http\Controllers\FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    
+    // Reviews Routes
+    Route::post('/products/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    
+    // Buy Now Route
+    Route::post('/checkout/buynow', [OrderController::class, 'buyNow'])->name('checkout.buynow');
+    
+    // Language Change
+    Route::post('/language/change', [App\Http\Controllers\LanguageController::class, 'change'])->name('language.change');
+    
+    // Notifications Routes
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/count', [App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('notifications.count');
+    Route::post('/notifications/{notification}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    
+    // Help Routes
+    Route::get('/help', [App\Http\Controllers\HelpController::class, 'index'])->name('help.index');
+    Route::get('/help/{slug}', [App\Http\Controllers\HelpController::class, 'show'])->name('help.show');
+
     // Order Routes
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');

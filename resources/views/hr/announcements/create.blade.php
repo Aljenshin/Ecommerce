@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create Announcement - Winbreaker HR')
+@section('title', 'Create Announcement - Uni-H-Pen HR')
 
 @section('content')
 <div class="mb-6">
