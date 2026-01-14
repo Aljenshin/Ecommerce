@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $categories = Category::withCount('products')->get();
         $featuredProducts = Product::where('is_active', true)
-            ->with(['category', 'brand'])
+            ->with(['category', 'brand', 'images'])
             ->latest()
             ->take(8)
             ->get();

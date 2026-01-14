@@ -32,9 +32,38 @@ class Product extends Model
 
         static::creating(function ($product) {
             if (empty($product->slug)) {
-                $product->slug = Str::slug($product->name);
+                $product->slug = static::generateUniqueSlug($product->name);
             }
         });
+
+        static::updating(function ($product) {
+            // Only regenerate slug if name changed
+            if ($product->isDirty('name') && empty($product->slug)) {
+                $product->slug = static::generateUniqueSlug($product->name, $product->id);
+            }
+        });
+    }
+
+    /**
+     * Generate a unique slug for the product
+     */
+    public static function generateUniqueSlug(string $name, ?int $excludeId = null): string
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        // Check if slug exists, and if so, append a number
+        while (static::where('slug', $slug)
+            ->when($excludeId, function ($query) use ($excludeId) {
+                return $query->where('id', '!=', $excludeId);
+            })
+            ->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 
     public function category(): BelongsTo
@@ -67,6 +96,11 @@ class Product extends Model
         return $this->hasMany(Favorite::class);
     }
 
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+    }
+
     public function getAverageRatingAttribute()
     {
         return $this->ratings()->avg('rating') ?? 0;
@@ -79,6 +113,11 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
+        // Use first product image if available, otherwise fallback to single image field
+        if ($this->relationLoaded('images') && $this->images->count() > 0) {
+            return $this->images->first()->image_url;
+        }
+        
         if ($this->image) {
             return asset('storage/' . $this->image);
         }

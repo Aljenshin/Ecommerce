@@ -82,25 +82,20 @@
         </div>
         
         <div class="mb-4">
-            <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Product Image</label>
+            <label for="images" class="block text-gray-700 text-sm font-bold mb-2">Product Images</label>
+            <p class="text-sm text-gray-600 mb-3">Upload 1 to 5 images to show different colors or variations</p>
             
-            <!-- Image Preview -->
-            <div id="image-preview-container" class="hidden mb-4">
-                <div class="relative inline-block">
-                    <img id="image-preview" src="" alt="Image preview" class="h-48 w-48 object-cover rounded-lg border-2 border-gray-300">
-                    <button type="button" onclick="clearImagePreview()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <p class="text-sm text-gray-600 mt-2">Image preview</p>
-            </div>
+            <!-- Multiple Images Preview -->
+            <div id="images-preview-container" class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4"></div>
             
-            <input type="file" name="image" id="image" accept="image/*" onchange="previewImage(this)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('image') border-red-500 @enderror">
-            <p class="text-sm text-gray-500 mt-1">Supported formats: JPG, PNG, GIF (Max: 2MB)</p>
-            @error('image')
+            <input type="file" name="images[]" id="images" accept="image/*" multiple onchange="previewMultipleImages(this)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('images') border-red-500 @enderror">
+            <p class="text-sm text-gray-500 mt-1">You can select up to 5 images. Supported formats: JPG, PNG, GIF (Max: 2MB each)</p>
+            <p class="text-sm text-red-600 mt-1" id="image-count-warning"></p>
+            @error('images')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+            @error('images.*')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
@@ -125,30 +120,60 @@
 </div>
 
 <script>
-    function previewImage(input) {
-        const preview = document.getElementById('image-preview');
-        const previewContainer = document.getElementById('image-preview-container');
+    let selectedImages = [];
+    const maxImages = 5;
+
+    function previewMultipleImages(input) {
+        const previewContainer = document.getElementById('images-preview-container');
+        const warningElement = document.getElementById('image-count-warning');
+        previewContainer.innerHTML = '';
+        warningElement.textContent = '';
         
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
+        if (input.files && input.files.length > 0) {
+            // Limit to maxImages
+            const files = Array.from(input.files).slice(0, maxImages);
             
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                previewContainer.classList.remove('hidden');
+            if (input.files.length > maxImages) {
+                warningElement.textContent = `Only the first ${maxImages} images will be uploaded.`;
             }
             
-            reader.readAsDataURL(input.files[0]);
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative';
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview ${index + 1}" class="h-32 w-full object-cover rounded-lg border-2 border-gray-300">
+                        <button type="button" onclick="removeImagePreview(${index})" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        <p class="text-xs text-gray-600 mt-1 text-center">Image ${index + 1}</p>
+                    `;
+                    previewContainer.appendChild(previewDiv);
+                };
+                
+                reader.readAsDataURL(file);
+            });
+            
+            selectedImages = files;
         }
     }
     
-    function clearImagePreview() {
-        const input = document.getElementById('image');
-        const preview = document.getElementById('image-preview');
-        const previewContainer = document.getElementById('image-preview-container');
+    function removeImagePreview(index) {
+        const input = document.getElementById('images');
+        const dt = new DataTransfer();
         
-        input.value = '';
-        preview.src = '';
-        previewContainer.classList.add('hidden');
+        Array.from(input.files).forEach((file, i) => {
+            if (i !== index) {
+                dt.items.add(file);
+            }
+        });
+        
+        input.files = dt.files;
+        previewMultipleImages(input);
     }
 </script>
 @endsection

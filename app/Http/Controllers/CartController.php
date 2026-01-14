@@ -17,7 +17,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = CartItem::where('user_id', Auth::id())
-            ->with(['product.category', 'product.brand'])
+            ->with(['product.category', 'product.brand', 'product.images'])
             ->get();
 
         $total = $cartItems->sum(function ($item) {
@@ -25,6 +25,12 @@ class CartController extends Controller
         });
 
         return view('cart.index', compact('cartItems', 'total'));
+    }
+
+    public function count()
+    {
+        $count = CartItem::where('user_id', Auth::id())->count();
+        return response()->json(['count' => $count]);
     }
 
     public function add(Request $request, Product $product)
@@ -73,7 +79,9 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+        return redirect()->route('cart.index')
+            ->with('success', 'Product added to cart!')
+            ->with('cart_updated', true);
     }
 
     public function update(Request $request, CartItem $cartItem)
@@ -89,7 +97,9 @@ class CartController extends Controller
         $cartItem->quantity = $request->quantity;
         $cartItem->save();
 
-        return redirect()->route('cart.index')->with('success', 'Cart updated!');
+        return redirect()->route('cart.index')
+            ->with('success', 'Cart updated!')
+            ->with('cart_updated', true);
     }
 
     public function remove(CartItem $cartItem)
@@ -100,6 +110,8 @@ class CartController extends Controller
 
         $cartItem->delete();
 
-        return redirect()->route('cart.index')->with('success', 'Item removed from cart!');
+        return redirect()->route('cart.index')
+            ->with('success', 'Item removed from cart!')
+            ->with('cart_updated', true);
     }
 }

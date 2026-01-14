@@ -51,26 +51,76 @@
                             <a href="{{ route('admin.users.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Users</a>
                             <a href="{{ route('admin.products.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
                             <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Categories</a>
+                            
+                            <!-- Notifications Icon for Admin -->
+                            @php
+                                $unreadCount = \App\Models\Notification::where('user_id', auth()->id())
+                                    ->where('is_read', false)
+                                    ->count();
+                            @endphp
+                            <a href="{{ route('notifications.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative" title="Notifications">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                @if($unreadCount > 0)
+                                    <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                                @endif
+                            </a>
                         @elseif(auth()->user()->hasRole('hr'))
                             <a href="{{ route('hr.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                             <a href="{{ route('hr.employees.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Employees</a>
                             <a href="{{ route('hr.announcements.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Announcements</a>
                             <a href="{{ route('hr.leaves.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Leaves</a>
                             <a href="{{ route('hr.payroll.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Payroll</a>
+                            
+                            <!-- Notifications Icon for HR -->
+                            @php
+                                $unreadCount = \App\Models\Notification::where('user_id', auth()->id())
+                                    ->where('is_read', false)
+                                    ->count();
+                            @endphp
+                            <a href="{{ route('notifications.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative" title="Notifications">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                @if($unreadCount > 0)
+                                    <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                                @endif
+                            </a>
                         @elseif(auth()->user()->hasRole('staff'))
                             <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                             <a href="{{ route('admin.products.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
                             <a href="{{ route('staff.attendance.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Attendance</a>
                             <a href="{{ route('staff.leaves.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Leaves</a>
                             <a href="{{ route('staff.payroll.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Payroll</a>
+                            
+                            <!-- Notifications Icon for Staff -->
+                            @php
+                                $unreadCount = \App\Models\Notification::where('user_id', auth()->id())
+                                    ->where('is_read', false)
+                                    ->count();
+                            @endphp
+                            <a href="{{ route('notifications.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative" title="Notifications">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                @if($unreadCount > 0)
+                                    <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                                @endif
+                            </a>
                         @else
                             <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
                             <a href="{{ route('products.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
-                            <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative">
-                                Cart
-                                @if(auth()->user()->cartItems()->count() > 0)
-                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                        {{ auth()->user()->cartItems()->count() }}
+                            <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative" title="Shopping Cart" id="cart-link">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                @php
+                                    $cartCount = auth()->user()->cartItems()->count();
+                                @endphp
+                                @if($cartCount > 0)
+                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold" id="cart-badge">
+                                        {{ $cartCount > 99 ? '99+' : $cartCount }}
                                     </span>
                                 @endif
                             </a>
@@ -156,7 +206,22 @@
                     @else
                         <a href="{{ route('home') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Home</a>
                         <a href="{{ route('products.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Products</a>
-                        <a href="{{ route('cart.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">Cart</a>
+                        <a href="{{ route('cart.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium relative" id="mobile-cart-link">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Cart
+                            </span>
+                            @php
+                                $cartCount = auth()->user()->cartItems()->count();
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                                    {{ $cartCount > 99 ? '99+' : $cartCount }}
+                                </span>
+                            @endif
+                        </a>
                         <a href="{{ route('orders.index') }}" class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">My Orders</a>
                     @endif
                     
@@ -296,8 +361,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                const notificationLink = document.querySelector('a[href="{{ route("notifications.index") }}"]');
-                if (notificationLink) {
+                const notificationLinks = document.querySelectorAll('a[href="{{ route("notifications.index") }}"]');
+                notificationLinks.forEach(notificationLink => {
                     let badge = notificationLink.querySelector('.bg-red-500');
                     if (data.unread_count > 0) {
                         if (!badge) {
@@ -309,14 +374,74 @@
                     } else if (badge) {
                         badge.remove();
                     }
-                }
+                });
             })
             .catch(error => console.error('Error fetching notifications:', error));
+        }
+
+        // Update cart badge count
+        function updateCartBadge() {
+            fetch('{{ route("cart.count") }}', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cartCount = data.count || 0;
+                
+                // Update desktop cart link
+                const cartLink = document.getElementById('cart-link');
+                if (cartLink) {
+                    let badge = cartLink.querySelector('#cart-badge');
+                    if (cartCount > 0) {
+                        if (!badge) {
+                            badge = document.createElement('span');
+                            badge.className = 'absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold';
+                            badge.id = 'cart-badge';
+                            cartLink.appendChild(badge);
+                        }
+                        badge.textContent = cartCount > 99 ? '99+' : cartCount;
+                    } else if (badge) {
+                        badge.remove();
+                    }
+                }
+                
+                // Update mobile cart link
+                const mobileCartLink = document.getElementById('mobile-cart-link');
+                if (mobileCartLink) {
+                    let badge = mobileCartLink.querySelector('.bg-red-500');
+                    if (cartCount > 0) {
+                        if (!badge) {
+                            badge = document.createElement('span');
+                            badge.className = 'absolute top-2 right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold';
+                            mobileCartLink.appendChild(badge);
+                        }
+                        badge.textContent = cartCount > 99 ? '99+' : cartCount;
+                    } else if (badge) {
+                        badge.remove();
+                    }
+                }
+            })
+            .catch(error => console.error('Error updating cart badge:', error));
         }
 
         // Update immediately and then every 30 seconds
         updateNotificationCount();
         setInterval(updateNotificationCount, 30000);
+        
+        // Update cart badge on page load and after cart actions
+        @if(!auth()->user()->isAdmin() && !auth()->user()->hasRole('hr') && !auth()->user()->hasRole('staff'))
+        updateCartBadge();
+        // Listen for cart updates
+        document.addEventListener('cartUpdated', updateCartBadge);
+        // Also update after a delay to catch server-side changes
+        setInterval(updateCartBadge, 30000);
+        @endif
         @endauth
     </script>
 </body>

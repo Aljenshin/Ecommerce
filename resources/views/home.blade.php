@@ -49,9 +49,9 @@
         @foreach($featuredProducts as $product)
         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-2xl hover:scale-105 transform transition-all duration-300 group">
             <a href="{{ route('products.show', $product->slug) }}" class="block">
-                <div class="relative overflow-hidden">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div class="relative overflow-hidden bg-gray-100 flex items-center justify-center" style="min-height: 256px;">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-auto max-h-80 object-contain object-top group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
                 <div class="p-4">
                     <h3 class="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">{{ $product->name }}</h3>

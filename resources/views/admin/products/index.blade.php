@@ -29,7 +29,7 @@
                     @foreach($products as $product)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-16 w-16 object-cover rounded">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-20 w-16 object-cover object-top rounded-lg border border-gray-200">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ $product->name }}
